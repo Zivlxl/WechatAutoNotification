@@ -64,7 +64,7 @@ def get_weather(province, city):
         return 'error'
 
     conn = http.client.HTTPSConnection('apis.tianapi.com')  # 接口域名
-    params = urllib.parse.urlencode({'key': myAPIKEY, 'city': city_info['areaid'], 'type': '1'})
+    params = urllib.parse.urlencode({'key': myAPIKEY, 'city': city_info['areaid'][2:], 'type': '1'})
     headers = {'Content-type': 'application/x-www-form-urlencoded'}
     conn.request('POST', '/tianqi/index', params, headers)
     tianapi = conn.getresponse()
@@ -105,5 +105,8 @@ if __name__ == "__main__":
     # # users
     #
     # data = get_data()
-    data = get_weather_city_info('山西', '西安')
+
+    # data = get_weather_city_info('山西', '西安')
+    data = get_weather('山东', '莱州')
     print(data)
+
