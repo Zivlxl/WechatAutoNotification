@@ -359,7 +359,7 @@ def get_data(user):
         'touser': user['id'],
         'template_id': user['template_id'],
         'url': 'http://weixin.qq.com/download',
-        'topcolor': '#FF0000',
+        'topcolor': get_color(),
         'data': get_template_data(user)
     }
 

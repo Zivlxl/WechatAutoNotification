@@ -1,16 +1,11 @@
-亲爱的{{name.DATA}}，早上好呀！今天是{{date.DATA}}，{{holidaytts.DATA}}{{morning_greeting.DATA}}
+亲爱的{{name.DATA}}，早上好呀！今天是{{date.DATA}}。{{morning_greeting.DATA}}
 
 {{love_name.DATA}}为你播报今天的天气哟！
 
 城市：{{province.DATA}} {{city.DATA}}
 天气：{{weather.DATA}}
 气温：{{max_temperature.DATA}}/{{min_temperature.DATA}}
-风向：{{wind_direction.DATA}} {{wind_scale.DATA}}
 tips：{{weather_tips.DATA}}
 
 距离{{name.DATA}}的生日还有{{*birthday.DATA}}天，我可没忘啊~
-
-
-当然啦，别忘了喝今天的鸡汤咯~
-{{note_en.DATA}}
 {{note_ch.DATA}}

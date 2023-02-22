@@ -1,0 +1,38 @@
+{
+    "app_id": "wx53cd4a766a0b1c44",
+    "app_secret": "8d48342f3f3ccaa71d7dad8241055e6e",
+    "users": [
+      {
+        "name": "小宝",
+        "love_name": "龙龙",
+        "id": "oZwTM5_n26kMATpCciyTcK0HsDgk",
+        "template_id": "otgNPLjvU5vbNfyS0phaIzKAbkp6epLDjuqhiMalxsk",
+        "province": "河南",
+        "city": "尉氏",
+        "festivals": [
+          {
+            "key": "birthday",
+            "date": "1997-11-14"
+          },
+          {
+            "key": "*birthday",
+            "date": "1997-9-16"
+          },
+          {
+            "key": "first_kiss",
+            "date": "2022-1-1"
+          }
+        ],
+        "memorialdays": [
+          {
+            "key": "loveday",
+            "date": "2023-1-31"
+          },
+          {
+            "key": "marryday",
+            "date": "2022-1-1"
+          }
+        ]
+      }
+    ]
+  }
