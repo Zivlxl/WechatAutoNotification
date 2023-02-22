@@ -3,7 +3,7 @@
 import random
 from time import localtime
 from requests import get, post
-from datetime import datetime, date
+import datetime
 from zhdate import ZhDate
 import sys
 import os
@@ -11,31 +11,32 @@ import json
 import http.client
 import urllib
 
-myAPIKEY = '73a41c7551c965462ed783eb8dcaddb7'
+myAPIKEY = '73a41c7551c965462ed783eb8dcaddb71'
 
+weather = {}
 
 def get_color():
     # 获取随机颜色
-    get_colors = lambda n: list(map(lambda i: "#" + "%06x" % random.randint(0, 0xFFFFFF), range(n)))
+    get_colors = lambda n: list(map(lambda i: '#' + '%06x' % random.randint(0, 0xFFFFFF), range(n)))
     color_list = get_colors(100)
     return random.choice(color_list)
 
 
-# def get_access_token():
-#     # appId
-#     app_id = config["app_id"]
-#     # appSecret
-#     app_secret = config["app_secret"]
-#     post_url = ("https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid={}&secret={}"
-#                 .format(app_id, app_secret))
-#     try:
-#         access_token = get(post_url).json()['access_token']
-#     except KeyError:
-#         print("获取access_token失败，请检查app_id和app_secret是否正确")
-#         os.system("pause")
-#         sys.exit(1)
-#     # print(access_token)
-#     return access_token
+def get_token():
+    # appId
+    app_id = users['app_id']
+    # appSecret
+    app_secret = users['app_secret']
+    post_url = ('https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid={}&secret={}'
+                .format(app_id, app_secret))
+    try:
+        token = get(post_url).json()['access_token']
+    except KeyError:
+        print('获取token失败，请检查app_id和app_secret是否正确')
+        os.system('pause')
+        sys.exit(1)
+    # print(token)
+    return token
 
 
 def get_weather_city_info(province, city):
@@ -47,7 +48,7 @@ def get_weather_city_info(province, city):
     result = tianapi.read()
     data = result.decode('utf-8')
     dict_data = json.loads(data)
-    print(dict_data)
+    
     if dict_data['code'] != 200:
         return 'error'
 
@@ -71,7 +72,6 @@ def get_weather(province, city):
     result = tianapi.read()
     data = result.decode('utf-8')
     dict_data = json.loads(data)
-    print(dict_data)
 
     if dict_data['code'] != 200:
         return 'error'
@@ -79,34 +79,293 @@ def get_weather(province, city):
     return dict_data['result']
 
 
+def get_ciba():
+    url = 'http://open.iciba.com/dsapi/'
+    headers = {
+        'Content-Type': 'application/json',
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) '
+                      'AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.0.0 Safari/537.36'
+    }
+    
+    r = get(url, headers=headers)
+    dict_data = r.json()
+    if r.status_code == 200 and dict_data:
+        return dict_data
+    
+    return 'error'
+
+
 def get_holiday():
-    pass
+    url = 'https://wangxinleo.cn/api/wx-push/holiday/getHolidaytts'
+    headers = {
+        'Content-Type': 'application/json',
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) '
+                      'AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.0.0 Safari/537.36'
+    }
+    r= get(url, headers=headers)
+    
+    dict_data = r.json()
+    if dict_data['code'] == 0 and r.status_code == 200 and dict_data:
+        return dict_data
+    
+    return 'error'
+    
+    
+def get_morning_greeting():
+    conn = http.client.HTTPSConnection('apis.tianapi.com')  #接口域名
+    params = urllib.parse.urlencode({'key':myAPIKEY})
+    headers = {'Content-type':'application/x-www-form-urlencoded'}
+    conn.request('POST','/zaoan/index',params,headers)
+    tianapi = conn.getresponse()
+    result = tianapi.read()
+    data = result.decode('utf-8')
+    dict_data = json.loads(data)
+    
+    if dict_data['code'] != 200:
+        return 'error'
+    
+    return dict_data['result']
+
+def get_evening_greeting():
+    conn = http.client.HTTPSConnection('apis.tianapi.com')  #接口域名
+    params = urllib.parse.urlencode({'key':myAPIKEY})
+    headers = {'Content-type':'application/x-www-form-urlencoded'}
+    conn.request('POST','/wanan/index',params,headers)
+    tianapi = conn.getresponse()
+    result = tianapi.read()
+    data = result.decode('utf-8')
+    dict_data = json.loads(data)
+    
+    if dict_data['code'] != 200:
+        return 'error'
+    
+    return dict_data['result']
+    
+    
+def get_love_poetry():
+    conn = http.client.HTTPSConnection('apis.tianapi.com')  #接口域名
+    params = urllib.parse.urlencode({'key':myAPIKEY})
+    headers = {'Content-type':'application/x-www-form-urlencoded'}
+    conn.request('POST','/qingshi/index',params,headers)
+    tianapi = conn.getresponse()
+    result = tianapi.read()
+    data = result.decode('utf-8')
+    dict_data = json.loads(data)
+    
+    if dict_data['code'] != 200:
+        return 'error'
+    
+    return dict_data['result']
+    
+
+def get_template_data(user):
+    #get weather
+    weather = get_weather(user['province'], user['city'])
+    if weather == 'error':
+        print('get weather infomation error!')
+        return weather
+    #get holiday
+    holiday = get_holiday()
+    if holiday == 'error':
+        print('get holiday infomation error!')
+        return holiday
+    #get greeting
+    morning_greeting = get_morning_greeting()
+    evening_greeting = get_evening_greeting()
+    if morning_greeting == 'error':
+        print('get morning greeting error!')
+        return morning_greeting
+    if evening_greeting == 'error':
+        print('get evening greeting error!')
+        return evening_greeting
+    #get ciba
+    ciba = get_ciba()
+    if ciba == 'error':
+        print('get ciba infomation error!')
+        return ciba
+    #get love poetry
+    love_poetry = get_love_poetry()
+    if love_poetry == 'error':
+        print('get love poetry error!')
+        return love_poetry
+    
+    data = {
+        'date': {
+            'value': '{} {}'.format(weather['date'], weather['week']),
+            'color': get_color()
+            },
+        'province':{
+            'value': weather['province'],
+            'color': get_color()
+        },
+        'city':{
+            'value': weather['area'],
+            'color': get_color()
+        },
+        'weather':{
+            'value': weather['weather'],
+            'color': get_color()
+        },
+        'min_temperature':{
+            'value': weather['lowest'],
+            'color': get_color()
+        },
+        'max_temperature':{
+            'value': weather['highest'],
+            'color': get_color()
+        },
+        'wind_direction':{
+            'value': weather['wind'],
+            'color': get_color()
+        },
+        'wind_scale':{
+            'value': weather['windsc'],
+            'color': get_color()
+        },
+        'humidity':{
+            'value': weather['humidity'],
+            'color': get_color()
+        },
+        'sunrise':{
+            'value': weather['sunrise'],
+            'color': get_color()
+        },
+        'sundown':{
+            'value': weather['sunset'],
+            'color': get_color()
+        },
+        'moonrise':{
+            'value': weather['moonrise'],
+            'color': get_color()
+        },
+        'moondown':{
+            'value': weather['moondown'],
+            'color': get_color()
+        },
+        'air_quality':{
+            'value': weather['quality'],
+            'color': get_color()
+        },
+        'weather_tips':{
+            'value': weather['tips'],
+            'color': get_color()
+        },
+        'holidaytts':{
+            'value': holiday['tts'],
+            'color': get_color()
+        },
+        'note_en':{
+            'value': ciba['content'],
+            'color': get_color()
+        },
+        'note_ch':{
+            'value': ciba['note'],
+            'color': get_color()
+        },
+        'morning_greeting':{
+            'value': morning_greeting['content'],
+            'color': get_color()
+        },
+        'evening_greeting':{
+            'value': evening_greeting['content'],
+            'color': get_color()
+        },
+        'love_poetry':{
+            'value': love_poetry['content'],
+            'color': get_color()
+        }
+        # '':{
+        #     'value': ,
+        #     'color': get_color()
+        # },
+        # '':{
+        #     'value': ,
+        #     'color': get_color()
+        # },
+        # '':{
+        #     'value': ,
+        #     'color': get_color()
+        # },
+        # '':{
+        #     'value': ,
+        #     'color': get_color()
+        # },
+        # '':{
+        #     'value': ,
+        #     'color': get_color()
+        # },
+    }
+    
+    #calculate memorial days
+    c_time = weather['date'].split('-')
+    c_date = datetime.datetime(int(c_time[0]), int(c_time[1]), int(c_time[2]))
+    for item in user['memorialdays']:
+        i_key = item['key']
+        i_time = item['date'].split('-')
+        i_date = datetime.datetime(int(i_time[0]), int(i_time[1]), int(i_time[2]))
+
+        i_days = (c_date - i_date).days
+        data[i_key] = {
+            'value': i_days,
+            'color': get_color()
+        }
+    
+    #calculate festivals
+    #todo:
+    
+    return data
 
 
-def get_data():
-    pass
+def get_data(user):
+    data = {
+        'touser': user['id'],
+        'template_id': user['template_id'],
+        'url': 'http://weixin.qq.com/download',
+        'topcolor': '#FF0000',
+        'data': get_template_data(user)
+    }
+    
+    return data
 
+
+def send(user, token):
+    data = get_data(user)
+    url = 'https://api.weixin.qq.com/cgi-bin/message/template/send?access_token={}'.format(token)
+    headers = {
+        'Content-Type': 'application/json',
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) '
+                      'AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.0.0 Safari/537.36'
+    }
+    
+    r =post(url, headers=headers, json=data).json()
+    if r['errcode'] == 40037:
+        print('推送消息失败，请检查模板id是否正确')
+    elif r['errcode'] == 40036:
+        print('推送消息失败，请检查模板id是否为空')
+    elif r['errcode'] == 40003:
+        print('推送消息失败! id填写不正确！应该填用户扫码后生成的id！要么就是填错了！请检查配置文件！')
+    elif r['errcode'] == 0:
+        print('推送消息成功')
+    else:
+        print(r)
 
 if __name__ == "__main__":
-    # try:
-    #     with open('config.json', 'r') as f:
-    #         config = json.load(f)
-    # except FileNotFoundError:
-    #     print("file not found!")
-    #     os.system("pause")
-    #     sys.exit(1)
-    # except SyntaxError:
-    #     print("file format error!")
-    #     os.system("pause")
-    #     sys.exit(1)
-    #
-    # # get accessToken from file
-    # accessToken = get_access_token()
-    # # users
-    #
-    # data = get_data()
+    try:
+        with open('users.json', 'r') as f:
+            users = json.load(f)
+    except FileNotFoundError:
+        print('file not found!')
+        os.system('pause')
+        sys.exit(1)
+    except SyntaxError:
+        print('file format error!')
+        os.system('pause')
+        sys.exit(1)
 
-    # data = get_weather_city_info('山西', '西安')
-    data = get_weather('山东', '莱州')
-    print(data)
+    token = get_token()    
+    
+    for user in users['users']:
+        send(user, token)
+
+
 

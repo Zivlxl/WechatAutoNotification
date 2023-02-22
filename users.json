@@ -1,0 +1,41 @@
+{
+    "app_id": "wx53cd4a766a0b1c441",
+    "app_secret": "8d48342f3f3ccaa71d7dad8241055e6e",
+    "users": [
+      {
+        "name": "ll",
+        "id": "oZwTM5_n26kMATpCciyTcK0HsDgk",
+        "template_id": "pWrDFy2aav082kyYUsc1DyLXcgYgvT9AN6b4-S7aFfo",
+        "province": "山东",
+        "city": "莱州",
+        "birthday": "xxx",
+        "festivals": [
+          {
+            "type": "*birthday",
+            "year": "xxx",
+            "date": "xxx"
+          },
+          {
+            "type": "birthday",
+            "year": "xxx",
+            "date": "xxx"
+          },
+          {
+            "type": "生日",
+            "year": "xxx",
+            "date": "xxx"
+          }
+        ],
+        "memorialdays": [
+          {
+            "key": "loveday",
+            "date": "2022-1-1"
+          },
+          {
+            "key": "marryday",
+            "date": "2022-1-1"
+          }
+        ]
+      }
+    ]
+  }
