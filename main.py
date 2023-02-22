@@ -192,6 +192,12 @@ def get_template_data(user):
     # current date
     c_time = weather['date'].split('-')
     c_date = datetime.datetime(int(c_time[0]), int(c_time[1]), int(c_time[2]))
+    
+    #identify color
+    region_color = get_color()
+    wind_color = get_color()
+    date_color = get_color()
+    temp_color = get_color()
 
     data = {
         'name': {
@@ -204,15 +210,15 @@ def get_template_data(user):
         },
         'date': {
             'value': '{}年{}月{}日 {}'.format(c_time[0], c_time[1], c_time[2], weather['week']),
-            'color': get_color()
+            'color': date_color
         },
         'province': {
             'value': weather['province'],
-            'color': get_color()
+            'color': region_color
         },
         'city': {
             'value': weather['area'],
-            'color': get_color()
+            'color': region_color
         },
         'weather': {
             'value': weather['weather'],
@@ -220,19 +226,19 @@ def get_template_data(user):
         },
         'min_temperature': {
             'value': weather['lowest'],
-            'color': get_color()
+            'color': temp_color
         },
         'max_temperature': {
             'value': weather['highest'],
-            'color': get_color()
+            'color': temp_color
         },
         'wind_direction': {
             'value': weather['wind'],
-            'color': get_color()
+            'color': wind_color
         },
         'wind_scale': {
             'value': weather['windsc'],
-            'color': get_color()
+            'color': wind_color
         },
         'humidity': {
             'value': weather['humidity'],
@@ -264,7 +270,7 @@ def get_template_data(user):
         },
         'holidaytts': {
             'value': holiday['tts'],
-            'color': get_color()
+            'color': date_color
         },
         'note_en': {
             'value': ciba['content'],
@@ -276,7 +282,7 @@ def get_template_data(user):
         },
         'morning_greeting': {
             'value': morning_greeting['content'],
-            'color': get_color()
+            'color': date_color
         },
         'evening_greeting': {
             'value': evening_greeting['content'],

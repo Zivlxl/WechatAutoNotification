@@ -8,7 +8,7 @@
 风向：{{wind_direction.DATA}} {{wind_scale.DATA}}
 tips：{{weather_tips.DATA}}
 
-今天是我们相识的第{{loveday.DATA}}天，又是喜欢你的一天呢！
+距离{{name.DATA}}的生日还有{{*birthday.DATA}}天，我可没忘啊~
 
 
 当然啦，别忘了喝今天的鸡汤咯~
