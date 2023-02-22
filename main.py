@@ -194,6 +194,14 @@ def get_template_data(user):
     c_date = datetime.datetime(int(c_time[0]), int(c_time[1]), int(c_time[2]))
 
     data = {
+        'name': {
+          'value': user['name'],
+          'color': get_color()
+        },
+        'love_name': {
+          'value': user['love_name'],
+          'color': get_color()
+        },
         'date': {
             'value': '{}年{}月{}日 {}'.format(c_time[0], c_time[1], c_time[2], weather['week']),
             'color': get_color()
