@@ -1,4 +1,4 @@
-#!usr/bin/python3
+#!/usr/bin/python3
 
 import random
 from time import localtime
@@ -12,9 +12,6 @@ import http.client
 import urllib
 
 myAPIKEY = '73a41c7551c965462ed783eb8dcaddb7'
-
-g_cities = []
-g_weathers = []
 
 
 def get_color():
@@ -62,10 +59,6 @@ def get_weather_city_info(province, city):
 
 
 def get_weather(province, city):
-    # find cache
-    if g_cities.count(province + city):
-        return g_weathers[province + city]
-
     city_info = get_weather_city_info(province, city)
     if city_info == 'error':
         return 'error'
@@ -82,9 +75,6 @@ def get_weather(province, city):
     if dict_data['code'] != 200:
         return 'error'
 
-    # add this to cache
-    g_cities.append(province + city)
-    g_weathers.append({province + city, dict_data['result']})
     return dict_data['result']
 
 
@@ -329,16 +319,16 @@ def get_template_data(user):
         i_days = 0
         if i_key[0] == '*':
             luner_c_date = ZhDate.today()
-            luner_t_date = ZhDate(int(i_time[0]), int(c_time[1]), int(c_time[2]))
+            luner_t_date = ZhDate(int(c_time[0]), int(i_time[1]), int(i_time[2]))
             i_days = (luner_t_date.to_datetime() - luner_c_date.to_datetime()).days
             if i_days < 0:
-                luner_t_date = ZhDate(int(i_time[0]) + 1, int(c_time[1]), int(c_time[2]))
+                luner_t_date = ZhDate(int(c_time[0]) + 1, int(i_time[1]), int(i_time[2]))
                 i_days = (luner_t_date.to_datetime() - luner_c_date.to_datetime()).days
         else:
-            t_date = datetime.datetime(int(i_time[0]), int(c_time[1]), int(c_time[2]))
+            t_date = datetime.datetime(int(c_time[0]), int(i_time[1]), int(i_time[2]))
             i_days = (t_date - c_date).days
             if i_days < 0:
-                t_date = datetime.datetime(int(i_time[0]) + 1, int(c_time[1]), int(c_time[2]))
+                t_date = datetime.datetime(int(c_time[0]) + 1, int(i_time[1]), int(i_time[2]))
                 i_days = (t_date - c_date).days
 
         data[i_key] = {
