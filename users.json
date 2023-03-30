@@ -3,12 +3,12 @@
     "app_secret": "8d48342f3f3ccaa71d7dad8241055e6e",
     "users": [
       {
-        "name": "小宝",
-        "love_name": "龙龙",
-        "id": "oZwTM51W2F3WQOxpBTwytcF51yXg",
-        "template_id": "otgNPLjvU5vbNfyS0phaIzKAbkp6epLDjuqhiMalxsk",
-        "province": "山东",
-        "city": "莱州",
+        "name": "自己",
+        "love_name": "我自己",
+        "id": "oZwTM5_n26kMATpCciyTcK0HsDgk",
+        "template_id": "ZFsj5YhfhsItWsYM8VWyjmQH_f7TaGmBxvaH5SBwkO8",
+        "province": "北京",
+        "city": "海淀",
         "festivals": [
           {
             "key": "birthday",
@@ -17,16 +17,12 @@
           {
             "key": "*birthday",
             "date": "1997-9-16"
-          },
-          {
-            "key": "first_kiss",
-            "date": "2022-1-1"
           }
         ],
         "memorialdays": [
           {
             "key": "loveday",
-            "date": "2023-1-31"
+            "date": "2015-4-19"
           },
           {
             "key": "marryday",
